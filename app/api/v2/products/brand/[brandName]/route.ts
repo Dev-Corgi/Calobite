@@ -1,11 +1,12 @@
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import type { Product } from '@/lib/types';
 
 export const dynamic = "force-dynamic";
 
 // Helper function to normalize nutriments data
-const normalizeNutriments = (product: any) => {
+const normalizeNutriments = (product: Product): Product => {
   if (!product.nutriments) return product;
 
   const nutriments = { ...product.nutriments };
@@ -22,9 +23,10 @@ const normalizeNutriments = (product: any) => {
 
 export async function GET(
   request: Request,
-  { params }: { params: { brandName: string } }
+  { params }: { params: Promise<{ brandName: string }> }
 ) {
-  const { brandName } = params;
+  // Next.js 15: params is now async and must be awaited
+  const { brandName } = await params;
   const { searchParams } = new URL(request.url);
   const currentProductCode = searchParams.get('exclude'); // 현재 제품 코드를 제외하기 위함
 
@@ -32,6 +34,7 @@ export async function GET(
     return NextResponse.json({ error: 'Brand name is required' }, { status: 400 });
   }
 
+  // Next.js 15: cookies() is now async, pass the function directly
   const supabase = createRouteHandlerClient({ cookies });
 
   let query = supabase

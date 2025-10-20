@@ -28,8 +28,8 @@ export function ContactForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function onSubmit(_values: z.infer<typeof formSchema>) {
     toast.success('Message Sent!', {
       description: 'Thank you for reaching out. We will get back to you shortly.',
     });

@@ -1,20 +1,9 @@
 // nutrition-info.tsx
 'use client';
 
+import type { Product } from '@/lib/types';
 import { Card, CardContent } from "@/components/ui/card";
 import { NutritionInfoSkeleton } from "./nutrition-info-skeleton";
-
-type Product = {
-  nutriments: {
-    'energy-kcal_100g'?: number;
-    carbohydrates_100g?: number;
-    sugars_100g?: number;
-    proteins_100g?: number;
-    fat_100g?: number;
-    'saturated-fat_100g'?: number;
-    sodium_100g?: number;
-  };
-};
 
 interface NutritionInfoProps {
   product?: Product;
@@ -31,7 +20,7 @@ export function NutritionInfo({ product, loading = false }: NutritionInfoProps) 
     return <NutritionInfoSkeleton />;
   }
 
-  const { nutriments } = product;
+  const nutriments = product.nutriments || {};
 
   const nutritionData = [
     { name: "Calories", value: formatValue(nutriments['energy-kcal_100g'], 'kcal') },

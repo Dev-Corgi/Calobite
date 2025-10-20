@@ -3,7 +3,7 @@ export function PolicyContent() {
     <>
       <h2>1. Introduction</h2>
       <p>
-        Welcome to Calobite Inc. ("Calobite", "we", "us", or "our"). We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services. By using our services, you agree to the collection and use of information in accordance with this policy.
+        Welcome to Calobite Inc. (&quot;Calobite&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;). We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services. By using our services, you agree to the collection and use of information in accordance with this policy.
       </p>
 
       <h2>2. Information We Collect</h2>

@@ -1,25 +1,30 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { Product } from '@/lib/types';
+import type { Product, Nutriments } from '@/lib/types';
 
 // Helper function to transform FormData into a structured Product object
 function formDataToProduct(formData: FormData): Partial<Product> {
   const product: Partial<Product> = {};
-  const nutriments: Record<string, any> = {};
+  const nutriments: Nutriments = {};
 
   for (const [key, value] of formData.entries()) {
     if (typeof value !== 'string') continue;
 
     if (key.startsWith('nutriment_')) {
-      // e.g., nutriment_energy-kcal_100g -> nutriments: { 'energy-kcal_100g': ... }
       const nutrimentKey = key.replace('nutriment_', '');
-      nutriments[nutrimentKey] = pd.to_numeric(value, { errors: 'coerce' }) ?? value;
-    } else if (key.endsWith('_tags')) {
-      // e.g., brands_tags -> ["tag1", "tag2"]
-      product[key as keyof Product] = value.split(',').map(tag => tag.trim());
+      const numericValue = parseFloat(value);
+      nutriments[nutrimentKey] = isNaN(numericValue) ? value : numericValue;
     } else {
-      // Direct mapping
-      product[key as keyof Product] = value;
+      // Direct mapping for other product fields
+      const keyOfProduct = key as keyof Product;
+      if (keyOfProduct in product) {
+        const currentValue = product[keyOfProduct];
+        if (typeof currentValue === 'number') {
+          (product as Record<string, unknown>)[keyOfProduct] = parseFloat(value);
+        } else {
+          (product as Record<string, unknown>)[keyOfProduct] = value;
+        }
+      }
     }
   }
 

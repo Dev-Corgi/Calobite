@@ -2,10 +2,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  i18n: {
-    locales: ['en-US', 'es-ES'],
-    defaultLocale: 'en-US',
-  },
+  
+
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -22,14 +20,13 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['@radix-ui/react-*'],
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   reactStrictMode: true,
-  swcMinify: true,
+
   output: 'standalone',
   async headers() {
     return [
@@ -54,17 +51,13 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' *.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: *.unsplash.com; font-src 'self' fonts.gstatic.com;",
-          },
-          {
-            key: 'Content-Security-Policy',
             value: `
               default-src 'self';
-              script-src 'self' 'unsafe-eval' 'unsafe-inline';
+              script-src 'self' 'unsafe-eval' 'unsafe-inline' *.googletagmanager.com;
               style-src 'self' 'unsafe-inline';
-              img-src 'self' data: https:;
+              img-src 'self' data: *.unsplash.com https:;
               connect-src 'self' https://world.openfoodfacts.org;
-              font-src 'self';
+              font-src 'self' fonts.gstatic.com;
               object-src 'none';
               base-uri 'self';
               form-action 'self';

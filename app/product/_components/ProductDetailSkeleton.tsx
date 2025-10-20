@@ -4,7 +4,7 @@ import { NutritionInfoSkeleton } from "./nutrition-info-skeleton";
 import { NutritionGraphSkeleton } from "./nutrition-graph-skeleton";
 import { ExerciseInfoSkeleton } from "./exercise-info-skeleton";
 import { OtherFoodsSkeleton } from "./other-foods-skeleton";
-import { RightSidebar } from "./right-sidebar";
+
 
 export function ProductDetailSkeleton() {
   return (

@@ -1,6 +1,7 @@
 'use client';
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import type { Product } from '@/lib/types';
+
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import {
@@ -12,16 +13,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-type Product = {
-  product_name: string;
-  brands: string;
-  serving_size: string;
-  serving_quantity: number;
-    nutriments: {
-    'energy-kcal_100g'?: number;
-  };
-};
-
 interface DetailHeroSectionProps {
   product: Product;
   displayMode: 'serving' | '100g';
@@ -29,7 +20,7 @@ interface DetailHeroSectionProps {
 }
 
 export function DetailHeroSection({ product, displayMode, setDisplayMode }: DetailHeroSectionProps) {
-  const calories = product.nutriments['energy-kcal_100g'];
+  const calories = product.nutriments?.['energy-kcal_100g'];
   return (
     <section>
       <Breadcrumb className="mb-4">
@@ -43,7 +34,7 @@ export function DetailHeroSection({ product, displayMode, setDisplayMode }: Deta
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{product.product_name}</BreadcrumbPage>
+            <BreadcrumbPage>{product.product_name || 'Product'}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -52,8 +43,8 @@ export function DetailHeroSection({ product, displayMode, setDisplayMode }: Deta
         <div className="p-6 pb-0">
           <div className="flex justify-between items-start pt-6">
             <div>
-              <Link href={`/search?type=brand&query=${encodeURIComponent(product.brands)}&page=1`} className="text-sm text-primary font-semibold">{product.brands || 'No brand information'}</Link>
-              <h1 className="text-3xl font-bold">{product.product_name}</h1>
+              <Link href={`/search?type=brand&query=${encodeURIComponent(product.brands || '')}&page=1`} className="text-sm text-primary font-semibold">{product.brands || 'No brand information'}</Link>
+              <h1 className="text-3xl font-bold">{product.product_name || 'Product'}</h1>
             </div>
             <div className="text-right">
               <p className="text-4xl font-bold text-primary">{calories ? `${Math.round(calories)}` : '-'}</p>

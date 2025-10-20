@@ -1,27 +1,15 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import { FoodListItem } from "@/components/food-list-item";
 
-// Define the type for a single food item from the API
-interface TopFood {
-  code: string;
-  product_name: string;
-  brands: string;
-  nutriments: {
-    'energy-kcal_100g'?: number;
-    [key: string]: any;
-  };
-  // The fields below are not currently used, but are included in the API response.
-  image_small_url: string;
-  view_count: number;
-}
+import type { Product } from '@/lib/types';
 
 interface TopFoodsSectionProps {
-  topFoods: TopFood[];
+  topFoods: Product[];
 }
 
-const FoodList = ({ items }: { items: TopFood[] }) => (
+const FoodList = ({ items }: { items: Product[] }) => (
   <div className="space-y-6">
     {items.map((item) => {
       // Extracts calorie information from nutriments.

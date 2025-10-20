@@ -1,8 +1,9 @@
-import { NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import type { Product } from '@/lib/types';
 
 // Helper function to normalize nutriments data
-const normalizeNutriments = (product: any) => {
+const normalizeNutriments = (product: Product): Product => {
   if (!product || !product.nutriments) return product;
 
   const nutriments = { ...product.nutriments };
@@ -17,11 +18,18 @@ const normalizeNutriments = (product: any) => {
   return { ...product, nutriments };
 };
 
+type RouteParams = {
+  params: Promise<{
+    barcode: string;
+  }>;
+};
+
 export async function GET(
-  request: Request,
-  { params }: { params: { barcode: string } }
+  request: NextRequest,
+  { params }: RouteParams
 ) {
-  const { barcode } = params;
+  // Next.js 15: params is now async and must be awaited
+  const { barcode } = await params;
   const { searchParams } = new URL(request.url);
   const fields = searchParams.get('fields');
 
@@ -42,42 +50,43 @@ export async function GET(
         'nutriments->>energy_100g.not.is.null,' +
         'nutriments->>energy-kj_100g.not.is.null'
       )
-      .single(); // 단일 레코드를 반환합니다.
+      .single<Partial<Product>>(); // Type the response as Partial<Product>
 
     if (error) {
       // PostgREST에서 PGRST116 코드는 행이 없음을 의미합니다.
       if (error.code === 'PGRST116') {
-        return NextResponse.json({ status_verbose: 'product not found', status: 0, product: null }, { status: 404 });
+        return NextResponse.json(
+          { status_verbose: 'product not found', status: 0, product: null },
+          { status: 404 }
+        );
       }
       console.error('Supabase error:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     if (!data) {
-        return NextResponse.json({ status_verbose: 'product not found', status: 0, product: null }, { status: 404 });
+      return NextResponse.json(
+        { status_verbose: 'product not found', status: 0, product: null },
+        { status: 404 }
+      );
     }
-
-    // 이제 쿼리에서 이미 에너지 정보가 있는 제품만 가져오므로 별도의 체크가 필요 없습니다.
 
     // Increment the view count for the product
     await supabase.rpc('increment_product_view_count', { product_code: barcode });
 
-    // 정규화된 제품 정보 가져오기
-    const normalizedProduct = normalizeNutriments(data);
+    // Normalize the nutriments data
+    const normalizedProduct = normalizeNutriments(data as Product);
 
-    // Open Food Facts API 형식에 맞춰 응답을 구성합니다.
-    const responsePayload = {
-        status: 1,
-        status_verbose: 'product found',
-        product: normalizedProduct,
-        code: barcode,
-    };
-
-    return NextResponse.json(responsePayload);
-
-  } catch (err) {
-    console.error('Server error:', err);
-    const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
-    return NextResponse.json({ error: 'Internal Server Error', details: errorMessage }, { status: 500 });
+    return NextResponse.json({
+      status_verbose: 'product found',
+      status: 1,
+      product: normalizedProduct
+    });
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    return NextResponse.json(
+      { status_verbose: 'error', status: 0, error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }

@@ -1,11 +1,12 @@
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import type { Product } from '@/lib/types';
 
 export const dynamic = "force-dynamic";
 
 // Helper function to normalize nutriments data
-const normalizeNutriments = (product: any) => {
+const normalizeNutriments = (product: Product): Product => {
   if (!product.nutriments) return product;
 
   const nutriments = { ...product.nutriments };
@@ -21,6 +22,7 @@ const normalizeNutriments = (product: any) => {
 };
 
 export async function GET() {
+  // Next.js 15: cookies() is now async, pass the function directly
   const supabase = createRouteHandlerClient({ cookies });
 
   // top_10_products 뷰에서 에너지 정보가 있는 제품만 조회

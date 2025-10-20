@@ -5,7 +5,6 @@ import { ChevronRight, LogOut, Menu, Search, X } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Sheet,
   SheetContent,
@@ -31,7 +30,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const navLinks = [
+// Define proper type for navigation links
+interface NavLink {
+  href: string;
+  text: string;
+  isNew?: boolean;
+}
+
+const navLinks: NavLink[] = [
   { href: "#", text: "Home" },
   { href: "#", text: "About Us" },
   { href: "#", text: "Contact Us" },
@@ -42,7 +48,6 @@ const navLinks = [
 
 export function MainNav() {
   const router = useRouter();
-  const [query, setQuery] = useState("");
   const [searchMode, setSearchMode] = useState("integrated");
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -58,7 +63,7 @@ export function MainNav() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: React.KeyboardEvent) => {
     e.preventDefault();
     if (inputValue.trim()) {
       const encodedQuery = encodeURIComponent(inputValue.trim());
@@ -174,7 +179,7 @@ export function MainNav() {
           onValueChange={setInputValue}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              handleSearch(e as any);
+              handleSearch(e);
             }
           }}
           placeholder="Search for food or brand..."

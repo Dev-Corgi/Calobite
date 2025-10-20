@@ -1,14 +1,15 @@
 import { FoodListItem } from "@/components/food-list-item";
+import type { Product } from "@/lib/types";
 
 interface ResultListProps {
-  searchResults: any[];
+  searchResults: Product[];
 }
 
 export function ResultList({ searchResults }: ResultListProps) {
   if (searchResults.length === 0) {
     return (
       <div className="text-center text-muted-foreground text-sm py-4">
-        <p>Oh, can't find the food you're looking for?</p>
+        <p>Oh, can&apos;t find the food you&apos;re looking for?</p>
         <p>Please leave your feedback at the email below!</p>
         <p className="font-semibold text-foreground">support@pillyze.com</p>
       </div>
@@ -24,7 +25,7 @@ export function ResultList({ searchResults }: ResultListProps) {
             code={item.code}
             name={item.product_name}
             brands={`${item.brands || ''} ${item.quantity || ''}`.trim()}
-            calories={`${item.nutriments['energy-kcal_100g'] ? Math.round(item.nutriments['energy-kcal_100g']) : 'N/A'} Kcal`}
+            calories={`${item.nutriments?.['energy-kcal_100g'] ? Math.round(item.nutriments['energy-kcal_100g']) : 'N/A'} Kcal`}
           />
         ))}
       </div>

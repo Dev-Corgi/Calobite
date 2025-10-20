@@ -6,7 +6,7 @@ import { NutritionGridSection } from "./_components/nutrition-grid-section";
 import { Sidebar } from "./_components/sidebar";
 
 async function getTopFoods() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `http://localhost:${process.env.PORT || 3001}`;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `http://localhost:${process.env.PORT || 3000}`;
   const res = await fetch(`${baseUrl}/api/v2/top-10`, {
     cache: 'no-store',
     headers: {
@@ -14,6 +14,7 @@ async function getTopFoods() {
     },
   });
   if (!res.ok) {
+    // Log error for debugging (removed in production by Next.js config)
     console.error('Failed to fetch top foods');
     return [];
   }

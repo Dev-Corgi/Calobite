@@ -3,7 +3,7 @@
 import { Suspense, useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Sidebar } from "../_components/sidebar";
-import { CardContent } from "@/components/ui/card";
+
 import { SearchSection } from "./_components/search-section";
 import { ClientResultList } from './_components/client-result-list';
 
@@ -19,7 +19,8 @@ interface SearchResult {
 function SearchPageContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get('query') || '';
-  const searchType = searchParams.get('type');
+  // Convert null to undefined for component prop compatibility
+  const searchType = searchParams.get('type') || undefined;
   
   const [results, setResults] = useState<SearchResult[]>([]);
   const [page, setPage] = useState(1);
@@ -27,7 +28,7 @@ function SearchPageContent() {
   const [hasMore, setHasMore] = useState(true);
   const [totalHits, setTotalHits] = useState(0);
 
-  const fetchResults = useCallback(async (currentPage: number, currentQuery: string, type: string | null) => {
+  const fetchResults = useCallback(async (currentPage: number, currentQuery: string, type: string | null | undefined) => {
     if (!currentQuery) {
       setResults([]);
       setTotalHits(0);
@@ -37,7 +38,7 @@ function SearchPageContent() {
     }
     setLoading(true);
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `http://localhost:${process.env.PORT || 3001}`;
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `http://localhost:${process.env.PORT || 3000}`;
       let url = '';
       if (type === 'brand') {
         url = `${baseUrl}/api/v2/products/brand/${encodeURIComponent(currentQuery)}?page=${currentPage}&page_size=30`;
@@ -59,6 +60,7 @@ function SearchPageContent() {
         setHasMore(newProducts.length > 0 && (total > (currentPage * 30)));
       }
     } catch (e) {
+      // Log error for debugging (removed in production by Next.js config)
       console.error('Failed to fetch results', e);
     } finally {
       setLoading(false);

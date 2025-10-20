@@ -28,7 +28,7 @@ export function TermsContent() {
 
       <h2>6. Disclaimer of Warranties</h2>
       <p>
-        Our Service is provided on an "AS IS" and "AS AVAILABLE" basis. Calobite Inc. makes no representations or warranties of any kind, express or implied, as to the operation of their services, or the information, content, or materials included therein.
+        Our Service is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis. Calobite Inc. makes no representations or warranties of any kind, express or implied, as to the operation of their services, or the information, content, or materials included therein.
       </p>
 
       <h2>7. Limitation of Liability</h2>
@@ -43,7 +43,7 @@ export function TermsContent() {
 
       <h2>9. Changes to These Terms</h2>
       <p>
-        We reserve the right, at our sole discretion, to modify or replace these Terms at any time. We will provide at least 30 days' notice prior to any new terms taking effect. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.
+        We reserve the right, at our sole discretion, to modify or replace these Terms at any time. We will provide at least 30 days&apos; notice prior to any new terms taking effect. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.
       </p>
 
       <h2>10. Contact Us</h2>

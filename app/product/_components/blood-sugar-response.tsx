@@ -1,5 +1,5 @@
 import { FoodListItem } from "@/components/food-list-item";
-import { Card, CardContent } from "@/components/ui/card";
+
 
 const bloodSugarData = [
   { name: 'Subway Tuna', details: 'Subway 238g', value: '140mg/dL' },
@@ -10,7 +10,7 @@ const bloodSugarData = [
 export function BloodSugarResponse() {
   return (
     <section className="mt-8">
-      <h2 className="text-xl font-bold mb-4">Let's check the blood sugar response to Subway Tuna</h2>
+      <h2 className="text-xl font-bold mb-4">Let&apos;s check the blood sugar response to Subway Tuna</h2>
       <div className="space-y-4">
         {bloodSugarData.map((item) => (
           <div key={item.name} className="hover:border-primary">

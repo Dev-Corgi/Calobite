@@ -1,13 +1,9 @@
 'use client';
 
+import type { Product } from '@/lib/types';
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { FoodListItem } from '@/components/food-list-item';
-
-type Product = {
-  code: string;
-  brands: string;
-};
 
 type RelatedProduct = {
   code: string;
@@ -32,12 +28,15 @@ export function OtherFoods({ product }: OtherFoodsProps) {
 
     const fetchRelatedProducts = async () => {
       try {
+        if (!product.brands) return;
+        
         const res = await fetch(`/api/v2/products/brand/${encodeURIComponent(product.brands)}?exclude=${product.code}&fields=code,product_name,brands,nutriments`);
         if (res.ok) {
           const data = await res.json();
           setRelatedProducts(data);
         }
       } catch (error) {
+        // Log error for debugging (removed in production by Next.js config)
         console.error('Failed to fetch related products:', error);
       }
     };
@@ -51,7 +50,7 @@ export function OtherFoods({ product }: OtherFoodsProps) {
 
   return (
     <section className="mt-8">
-      <h2 className="text-xl font-bold mb-4">Other products from {product.brands}</h2>
+      <h2 className="text-xl font-bold mb-4">Other products from {product.brands || 'this brand'}</h2>
       <div className="space-y-4">
         {relatedProducts.map((item) => {
           const calories = item.nutriments?.['energy-kcal_100g']
@@ -72,8 +71,8 @@ export function OtherFoods({ product }: OtherFoodsProps) {
       </div>
       <div className="text-center mt-6">
         <Button variant="link" className="text-muted-foreground underline"
-        onClick={() => window.location.href = `/search?type=brand&query=${encodeURIComponent(product.brands)}&page=1`}
-        >View all products from {product.brands}</Button>
+        onClick={() => window.location.href = `/search?type=brand&query=${encodeURIComponent(product.brands || '')}&page=1`}
+        >View all products from {product.brands || 'this brand'}</Button>
       </div>
       <div className="mt-8 text-xs text-muted-foreground border-t pt-6 space-y-1">
         <p>ⓘ The copyright of all content and posts published on this site belongs to Pill-raise Inc.</p>

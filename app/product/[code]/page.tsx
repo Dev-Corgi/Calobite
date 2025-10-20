@@ -1,28 +1,12 @@
 import { Suspense } from 'react';
 import { ProductDetailClient } from './ProductDetailClient';
 import { ProductDetailSkeleton } from '../_components/ProductDetailSkeleton';
+import type { Product } from '@/lib/types';
 
-type Product = {
-  code: string;
-  product_name: string;
-  brands: string;
-  image_url: string;
-  serving_size: string;
-  serving_quantity: number;
-  nutriments: {
-    'energy-kcal_100g'?: number;
-    carbohydrates_100g?: number;
-    proteins_100g?: number;
-    fat_100g?: number;
-    sugars_100g?: number;
-    'saturated-fat_100g'?: number;
-    sodium_100g?: number;
-    [key: string]: any;
-  };
-};
+
 
 async function getProduct(code: string): Promise<Product | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `http://localhost:${process.env.PORT || 3001}`;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `http://localhost:${process.env.PORT || 3000}`;
   const res = await fetch(`${baseUrl}/api/v2/product/${code}`, {
     cache: 'no-store',
   });
@@ -53,10 +37,13 @@ const ProductData = async ({ code }: { code: string }) => {
   return <ProductDetailClient product={product} />;
 };
 
-export default function ProductPage({ params }: { params: { code: string } }) {
+export default async function ProductPage({ params }: { params: Promise<{ code: string }> }) {
+  // Next.js 15: params is now async and must be awaited
+  const { code } = await params;
+  
   return (
     <Suspense fallback={<ProductDetailSkeleton />}>
-      <ProductData code={params.code} />
+      <ProductData code={code} />
     </Suspense>
   );
 }

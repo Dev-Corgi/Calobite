@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import type { Product } from '@/lib/types';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -13,19 +14,18 @@ export async function GET(request: Request) {
 
   try {
     // 검색어가 있을 경우 textSearch를, 없을 경우 일반 from을 사용합니다.
-    let query;
+    // Initialize query immediately to avoid implicit any type
+    let query = supabase.from('products').select<string, Product>(fields || '*', { count: 'exact' });
 
     if (searchTerms) {
       // textSearch를 사용할 때는 select, filter 등을 함께 사용하기 어렵기 때문에
       // RPC를 사용하여 검색과 정렬을 한 번에 처리하는 것이 효율적입니다.
       // 하지만 기존 필터링 로직과의 호환성을 위해 textSearch를 먼저 적용합니다.
-      query = supabase.from('products').select(fields || 'product_name, brands, nutriments', { count: 'exact' });
+      query = supabase.from('products').select<string, Product>(fields || 'product_name, brands, nutriments', { count: 'exact' });
       query = query.textSearch('search_vector', searchTerms, { 
         config: 'simple',
         type: 'websearch' // 'websearch'는 여러 단어를 AND 연산으로 처리합니다.
       });
-    } else {
-      query = supabase.from('products').select(fields || '*', { count: 'exact' });
     }
 
     // 2. 태그 및 영양소 필터링
@@ -38,9 +38,13 @@ export async function GET(request: Request) {
           query = query.contains(key, value.split(','));
         }
       } else if (key.match(/_(gt|lt|eq)$/)) { // 영양소 필터링 (e.g., sugars_100g_gt)
-        const [field, operator] = key.split(/_(gt|lt|eq)$/);
-        const opMap = { gt: '>', lt: '<', eq: '=' };
-        query = query.filter(`nutriments->>${field}`, opMap[operator], value);
+        const parts = key.split(/_(gt|lt|eq)$/);
+        const field = parts[0];
+        const operator = parts[1] as 'gt' | 'lt' | 'eq';
+        const opMap: Record<'gt' | 'lt' | 'eq', string> = { gt: '>', lt: '<', eq: '=' };
+        if (operator && opMap[operator]) {
+          query = query.filter(`nutriments->>${field}`, opMap[operator], value);
+        }
       }
     });
 

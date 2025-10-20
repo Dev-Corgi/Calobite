@@ -29,6 +29,7 @@ export function FoodSearchForm({
   const [visibleBadgeCount, setVisibleBadgeCount] = useState(popularSearches.length);
   const containerRef = useRef<HTMLDivElement>(null);
   const popularSearchesRef = useRef<HTMLDivElement>(null);
+  const badgeContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const calculateVisibleBadges = () => {
@@ -40,7 +41,8 @@ export function FoodSearchForm({
         let totalWidth = 0;
         let count = 0;
 
-        const badgeElements = Array.from(popularSearchesRef.current.nextSibling?.children || []);
+        // Use badgeContainerRef directly instead of nextSibling
+        const badgeElements = Array.from(badgeContainerRef.current?.children || []);
 
         for (const badge of badgeElements) {
           const badgeWidth = (badge as HTMLElement).offsetWidth;
@@ -59,15 +61,16 @@ export function FoodSearchForm({
       calculateVisibleBadges();
     });
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      observer.observe(currentContainer);
     }
 
     calculateVisibleBadges();
 
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
+      if (currentContainer) {
+        observer.unobserve(currentContainer);
       }
     };
   }, []);
@@ -122,7 +125,7 @@ export function FoodSearchForm({
       {showPopularSearches && (
         <div ref={containerRef} className="flex items-center justify-center flex-wrap gap-6 mt-6 text-base text-muted-foreground">
           <span ref={popularSearchesRef} className="font-semibold whitespace-nowrap">Popular Searches</span>
-          <div className="flex items-center gap-4">
+          <div ref={badgeContainerRef} className="flex items-center gap-4">
           {popularSearches.slice(0, visibleBadgeCount).map((term) => (
             <Badge
               key={term}

@@ -7,7 +7,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-const navItems = [
+// Define proper type for navigation items
+interface NavItem {
+  title: string;
+  content?: string[];
+  highlighted?: boolean;
+}
+
+const navItems: NavItem[] = [
   { title: "Home" },
   { title: "About Us" },
   { title: "Contact Us" },

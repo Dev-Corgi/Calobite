@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: 'Find answers to frequently asked questions about Calobite, including how to use the app, data accuracy, and subscription details. Get the information you need to start your health journey.',
   openGraph: {
     title: 'Calobite FAQ | Get Answers to Your Questions',
-    description: 'Explore our FAQ page to find answers about Calobite\'s features and data.',
+    description: 'Explore our FAQ page to find answers about Calobite&apos;s features and data.',
     url: 'https://www.calobite.com/faq',
     type: 'website',
     images: [
@@ -32,7 +32,7 @@ export default function FaqPage() {
       <div className="text-center mb-16">
         <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Frequently Asked Questions</h1>
         <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-2xl mx-auto">
-          Have questions? We've got answers. If you can't find what you're looking for, feel free to contact us.
+          Have questions? We&apos;ve got answers. If you can&apos;t find what you&apos;re looking for, feel free to contact us.
         </p>
       </div>
       <FaqList />

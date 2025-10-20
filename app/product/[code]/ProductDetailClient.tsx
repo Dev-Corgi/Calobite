@@ -6,20 +6,10 @@ import { DetailHeroSection } from "../_components/hero-section";
 import { NutritionInfo } from "../_components/nutrition-info";
 import { ExerciseInfo } from "../_components/exercise-info";
 import { OtherFoods } from "../_components/other-foods";
-import { RightSidebar } from "../_components/right-sidebar";
+
 import { NutritionGraph } from "../_components/nutrition-graph";
 
-type Product = {
-  code: string;
-  product_name: string;
-  brands: string;
-  image_url: string;
-  serving_size: string;
-  serving_quantity: number;
-  nutriments: {
-    [key: string]: any;
-  };
-};
+import type { Product, Nutriments } from '@/lib/types';
 
 interface ProductDetailClientProps {
   product: Product;
@@ -34,13 +24,19 @@ export function ProductDetailClient({ product: initialProduct }: ProductDetailCl
     }
 
     const ratio = initialProduct.serving_quantity / 100;
-    const newNutriments: { [key: string]: any } = {};
+    const newNutriments: Nutriments = {};
+
+    // Check if nutriments exists before iterating
+    if (!initialProduct.nutriments) {
+      return initialProduct;
+    }
 
     for (const key in initialProduct.nutriments) {
-      if (key.endsWith('_100g')) {
-        newNutriments[key] = initialProduct.nutriments[key] * ratio;
+      const value = initialProduct.nutriments[key];
+      if (key.endsWith('_100g') && typeof value === 'number') {
+        newNutriments[key] = value * ratio;
       } else {
-        newNutriments[key] = initialProduct.nutriments[key];
+        newNutriments[key] = value;
       }
     }
 
@@ -61,7 +57,6 @@ export function ProductDetailClient({ product: initialProduct }: ProductDetailCl
         <ExerciseInfo product={product} />
         <OtherFoods product={product} />
       </div>
-      {/* <RightSidebar /> */}
     </div>
   );
 }

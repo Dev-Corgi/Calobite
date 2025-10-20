@@ -1,13 +1,7 @@
+import type { Product } from '@/lib/types';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Footprints, Bike, Waves, Wind} from "lucide-react";
-
-type Product = {
-  product_name: string;
-  nutriments: {
-    "energy-kcal_100g"?: number;
-  };
-};
 
 interface ExerciseInfoProps {
   product: Product;
@@ -39,7 +33,7 @@ const calculateDuration = (
 };
 
 export function ExerciseInfo({ product }: ExerciseInfoProps) {
-  const calories = product.nutriments["energy-kcal_100g"] || 0;
+  const calories = product.nutriments?.["energy-kcal_100g"] || 0;
 
   return (
     <section className="mt-8">

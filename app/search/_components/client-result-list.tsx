@@ -43,7 +43,7 @@ export function ClientResultList({ results, loading, hasMore, onLoadMore, isInit
   if (results.length === 0 && !loading) {
     return (
       <div className="text-center text-muted-foreground text-sm py-4">
-        <p>Oh, can't find the food you're looking for?</p>
+        <p>Oh, can&apos;t find the food you&apos;re looking for?</p>
         <p>Please leave your feedback at the email below!</p>
         <p className="font-semibold text-foreground">support@pillyze.com</p>
       </div>
