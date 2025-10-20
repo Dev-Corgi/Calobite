@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# USDA Food Data Backend
+# /data/*.json
+/prisma/*.db
+/prisma/*.db-journal
