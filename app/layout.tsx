@@ -112,7 +112,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://world.openfoodfacts.org" />
         <link rel="dns-prefetch" href="https://world.openfoodfacts.org" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-        
+        <meta name="google-site-verification" content="fY6hw_hHR1Rxiw_lfMhzTA6yc33FCWdZ0tJsWXZ4AoA" />
         {/* Organization Schema for Knowledge Graph */}
         <script
           type="application/ld+json"
