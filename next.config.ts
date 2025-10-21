@@ -27,7 +27,13 @@ const nextConfig: NextConfig = {
   },
   reactStrictMode: true,
 
+  // Use 'standalone' for Docker/serverless, or remove for traditional deployment
+  // For Vercel, you can remove this line or keep it
   output: 'standalone',
+  
+  // Optimize static generation
+  // Increase timeout for generateStaticParams during build
+  staticPageGenerationTimeout: 180, // 3 minutes per page (default is 60)
   async headers() {
     return [
       {

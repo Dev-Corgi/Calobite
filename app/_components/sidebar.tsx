@@ -1,66 +1,40 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 // Define proper type for navigation items
 interface NavItem {
   title: string;
-  content?: string[];
-  highlighted?: boolean;
+  href: string;
 }
 
 const navItems: NavItem[] = [
-  { title: "Home" },
-  { title: "About Us" },
-  { title: "Contact Us" },
-  { title: "FAQ" },
-  { title: "Privacy Policy" },
-  { title: "Terms of Service" },
+  { title: "Home", href: "/" },
+  { title: "About Us", href: "/about" },
+  { title: "Contact Us", href: "/contact" },
+  { title: "FAQ", href: "/faq" },
+  { title: "Privacy Policy", href: "/privacy-policy" },
+  { title: "Terms of Service", href: "/terms-of-service" },
 ];
 
 export function Sidebar() {
   return (
     <aside className="hidden lg:block w-64 p-4">
       <nav>
-        <Accordion type="multiple" className="w-full">
-          {navItems.map((item) => (
-            <div key={item.title}>
-              {item.content ? (
-                <AccordionItem value={item.title} className="border-none">
-                  <AccordionTrigger className="text-lg font-semibold py-6 hover:no-underline px-4">
-                    {item.title}
-                  </AccordionTrigger>
-                  <AccordionContent className="pt-2">
-                    <div className="flex flex-col items-start pl-11 space-y-1">
-                      {item.content.map((subItem) => (
-                        <Button
-                          variant="ghost"
-                          key={subItem}
-                          className="h-8 text-muted-foreground justify-start w-full">
-                          {subItem}
-                        </Button>
-                      ))}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ) : (
-                <Button
-                  variant="ghost"
-                  className={`w-full justify-start text-lg font-semibold py-6 h-auto px-4${
-                    item.highlighted ? "text-primary" : ""
-                  }`}>
-                  {item.title}
-                </Button>
-              )}
-              <Separator />
-            </div>
-          ))}
-        </Accordion>
+        {navItems.map((item) => (
+          <div key={item.title}>
+            <Button
+              asChild
+              variant="ghost"
+              className="w-full justify-start text-lg font-semibold py-6 h-auto px-4"
+            >
+              <Link href={item.href}>
+                {item.title}
+              </Link>
+            </Button>
+            <Separator />
+          </div>
+        ))}
       </nav>
     </aside>
   );

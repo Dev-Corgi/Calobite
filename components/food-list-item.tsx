@@ -41,30 +41,29 @@ export function FoodListItem({
 
   return (
     <Card className="p-6 rounded-3xl hover:border-primary transition-colors">
-      <Link href={`/product/${code}`} className="block">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4 flex-1">
+          <div className="flex-1">
+            <Link href={`/product/${code}`} className="block">
               <p
                 className={
                   highlightName ? "font-bold" : "font-semibold text-lg"
                 }>
                 {name}
               </p>
-              <Link
-                href={`/search?type=brand&query=${encodeURIComponent(brands)}`}
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                onClick={(e) => e.stopPropagation()} // Prevent link bubbling to the parent Card's Link
-                >
-                {brands}
-              </Link>
-            </div>
+            </Link>
+            <Link
+              href={`/search?type=brand&query=${encodeURIComponent(brands)}`}
+              className="text-sm text-muted-foreground hover:text-primary transition-colors inline-block"
+            >
+              {brands}
+            </Link>
           </div>
-          <span className="font-bold text-lg whitespace-nowrap">
-            {calories}
-          </span>
         </div>
-      </Link>
+        <Link href={`/product/${code}`} className="font-bold text-lg whitespace-nowrap">
+          {calories}
+        </Link>
+      </div>
     </Card>
   );
 }

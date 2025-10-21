@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const nutrients = [
   'Carbohydrates', 'Protein', 'Fat', 'Sugars', 'Saturated Fat',
@@ -13,9 +14,17 @@ export function NutritionGridSection() {
       <h2 className="text-2xl font-bold mb-6">Foods by Nutrient</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {nutrients.map((nutrient) => (
-          <Button key={nutrient} variant="outline" className="rounded-3xl h-40 text-lg font-semibold">
+          <Link
+            key={nutrient}
+            href={`/search?query=${encodeURIComponent(nutrient)}`}
+            className={cn(
+              "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-3xl text-lg font-semibold",
+              "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
+              "h-40 transition-colors"
+            )}
+          >
             {nutrient}
-          </Button>
+          </Link>
         ))}
       </div>
     </section>

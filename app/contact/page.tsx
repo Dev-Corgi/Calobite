@@ -5,6 +5,9 @@ import { ContactInfo } from './_components/contact-info';
 export const metadata: Metadata = {
   title: 'Contact Calobite | Get in Touch for Support & Inquiries',
   description: 'Have a question or feedback? Contact the Calobite team. We&apos;re here to help with support, partnership inquiries, and more. Reach out via our contact form or email.',
+  alternates: {
+    canonical: 'https://www.calobite.com/contact',
+  },
   openGraph: {
     title: 'Contact Calobite | We&apos;d Love to Hear From You',
     description: 'Get in touch with the Calobite team for support, feedback, or inquiries.',
@@ -12,7 +15,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://www.calobite.com/images/contact-og-image.jpg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Contact Calobite Support and Inquiry Team',
@@ -23,7 +26,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Contact Calobite | Support & Inquiries',
     description: 'Reach out to the Calobite team. We are ready to assist you.',
-    images: ['https://www.calobite.com/images/contact-twitter-image.jpg'],
+    images: ['/twitter-card.png'],
   },
 };
 

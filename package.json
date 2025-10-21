@@ -5,8 +5,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:clean": "npm run clean && npm run build",
+    "build:analyze": "ANALYZE=true next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "clean": "node -e \"require('fs').rmSync('.next', {recursive: true, force: true})\"",
+    "check-brands": "tsx -r dotenv/config scripts/check-top-brands.ts dotenv_config_path=.env.local",
+    "prebuild": "echo 'Verifying top brands...' && npm run check-brands"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

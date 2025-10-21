@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://www.calobite.com/images/about-og-image.jpg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'The Calobite Team and Mission Statement',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'About Calobite | Our Mission, Vision, and Team',
     description: 'Learn about the people and principles driving Calobite forward.',
-    images: ['https://www.calobite.com/images/about-twitter-image.jpg'],
+    images: ['/twitter-card.png'],
   },
 };
 

@@ -38,12 +38,12 @@ interface NavLink {
 }
 
 const navLinks: NavLink[] = [
-  { href: "#", text: "Home" },
-  { href: "#", text: "About Us" },
-  { href: "#", text: "Contact Us" },
-  { href: "#", text: "FAQ" },
-  { href: "#", text: "Privacy Policy" },
-  { href: "#", text: "Terms of Service" },
+  { href: "/", text: "Home" },
+  { href: "/about", text: "About Us" },
+  { href: "/contact", text: "Contact" },
+  { href: "/faq", text: "FAQ" },
+  { href: "/privacy-policy", text: "Privacy" },
+  { href: "/terms-of-service", text: "Terms" },
 ];
 
 export function MainNav() {

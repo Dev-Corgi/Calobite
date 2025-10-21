@@ -1,114 +1,80 @@
-'use client';
-
-import { Suspense, useState, useEffect, useCallback } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
+import { Metadata } from 'next';
 import { Sidebar } from "../_components/sidebar";
-
 import { SearchSection } from "./_components/search-section";
-import { ClientResultList } from './_components/client-result-list';
+import { SearchPageClient } from './SearchPageClient';
 
-interface SearchResult {
-  code: string;
-  product_name: string;
-  brands?: string;
-  nutriments: {
-    'energy-kcal_100g'?: number;
+/**
+ * Generate metadata for search page (SEO optimization)
+ */
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string; type?: string }>;
+}): Promise<Metadata> {
+  const params = await searchParams;
+  const query = params.query || '';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.calobite.com';
+  
+  const title = query 
+    ? `${query} - Nutrition Search Results | Calobite`
+    : 'Search Food Database | Calobite';
+  
+  const description = query
+    ? `Find nutrition information for ${query}. Search our comprehensive food database with calorie counts, macros, and ingredients for millions of products.`
+    : 'Search millions of food products for detailed nutrition information, calorie counts, ingredient lists, and allergen data.';
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: query 
+        ? `${baseUrl}/search?query=${encodeURIComponent(query)}`
+        : `${baseUrl}/search`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: query ? `${baseUrl}/search?query=${encodeURIComponent(query)}` : `${baseUrl}/search`,
+      images: [`${baseUrl}/og-image-search.png`],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [`${baseUrl}/twitter-card.png`],
+    },
   };
 }
 
-function SearchPageContent() {
-  const searchParams = useSearchParams();
-  const query = searchParams.get('query') || '';
-  // Convert null to undefined for component prop compatibility
-  const searchType = searchParams.get('type') || undefined;
-  
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
-  const [totalHits, setTotalHits] = useState(0);
-
-  const fetchResults = useCallback(async (currentPage: number, currentQuery: string, type: string | null | undefined) => {
-    if (!currentQuery) {
-      setResults([]);
-      setTotalHits(0);
-      setLoading(false);
-      setHasMore(false);
-      return;
-    }
-    setLoading(true);
-    try {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `http://localhost:${process.env.PORT || 3000}`;
-      let url = '';
-      if (type === 'brand') {
-        url = `${baseUrl}/api/v2/products/brand/${encodeURIComponent(currentQuery)}?page=${currentPage}&page_size=30`;
-      } else {
-        url = `${baseUrl}/api/v2/search?search_terms=${encodeURIComponent(currentQuery)}&page=${currentPage}&page_size=30&fields=code,product_name,brands,nutriments`;
-      }
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data = await response.json();
-
-      const newProducts = type === 'brand' ? data : data.products;
-      const total = type === 'brand' ? data.length : data.count;
-
-      setResults(prev => currentPage === 1 ? newProducts : [...prev, ...newProducts]);
-      setTotalHits(total || 0);
-      if (type === 'brand') {
-        setHasMore(false); // Pagination not supported for brand search
-      } else {
-        setHasMore(newProducts.length > 0 && (total > (currentPage * 30)));
-      }
-    } catch (e) {
-      // Log error for debugging (removed in production by Next.js config)
-      console.error('Failed to fetch results', e);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    setResults([]);
-    setPage(1);
-    setHasMore(true);
-    fetchResults(1, query, searchType);
-  }, [query, searchType, fetchResults]);
-
-  const handleLoadMore = () => {
-    if (!loading && hasMore && searchType !== 'brand') {
-      const newPage = page + 1;
-      setPage(newPage);
-      fetchResults(newPage, query, searchType);
-    }
-  };
+/**
+ * Search page with SSR for better SEO
+ */
+export default async function SearchPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string; type?: string }>;
+}) {
+  const params = await searchParams;
+  const query = params.query || '';
+  const searchType = params.type;
 
   return (
     <section className="pt-8">
-      <SearchSection query={query} totalHits={totalHits} searchType = {searchType} />
+      <SearchSection query={query} totalHits={0} searchType={searchType} />
       <div className="bg-muted">
         <div className="container mx-auto flex flex-col lg:flex-row gap-12 px-4 py-8 mt-8">
           <Sidebar />
           <div className="flex-1 max-w-5xl">
             <div className="pt-6">
-              <ClientResultList 
-                results={results}
-                loading={loading}
-                hasMore={hasMore}
-                onLoadMore={handleLoadMore}
-                isInitialLoad={loading && page === 1}
-              />
+              <Suspense fallback={<div>Loading search results...</div>}>
+                <SearchPageClient initialQuery={query} initialType={searchType} />
+              </Suspense>
             </div>
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-export default function SearchPage() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <SearchPageContent />
-    </Suspense>
   );
 }
