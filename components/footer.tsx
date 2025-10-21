@@ -1,12 +1,12 @@
 import Link from "next/link";
 
 const footerLinks = [
-  { href: "#", text: "About Us" },
-  { href: "#", text: "Careers" },
-  { href: "#", text: "Contact" },
-  { href: "#", text: "Terms of Service" },
-  { href: "#", text: "Privacy Policy" },
-  { href: "#", text: "Cookie Policy" },
+  { href: "/about", text: "About Us" },
+  { href: "/contact", text: "Contact" },
+  { href: "/faq", text: "FAQ" },
+  { href: "/terms-of-service", text: "Terms of Service" },
+  { href: "/privacy-policy", text: "Privacy Policy" },
+  { href: "/search", text: "Search" },
 ];
 
 const companyInfo = [

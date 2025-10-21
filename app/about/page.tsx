@@ -5,8 +5,22 @@ import { TeamSection } from './_components/team-section';
 import { ValuesSection } from './_components/values-section';
 
 export const metadata: Metadata = {
-  title: 'About Calobite | Our Mission, Vision, and Team',
-  description: 'Learn about Calobite, the team dedicated to making nutrition accessible and understandable for everyone. Discover our mission to empower healthier lifestyles through technology.',
+  title: 'About Calobite | Mission to Make Nutrition Accessible',
+  description: 'Learn about Calobite\'s mission to simplify nutrition tracking. Meet our team dedicated to providing accurate food data and empowering healthier choices worldwide.',
+  alternates: {
+    canonical: 'https://www.calobite.com/about',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
   openGraph: {
     title: 'About Calobite | Our Mission, Vision, and Team',
     description: 'Discover the story behind Calobite and our commitment to nutritional transparency.',

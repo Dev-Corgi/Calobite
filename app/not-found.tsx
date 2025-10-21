@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 import { BackButton } from './not-found-client';
 
 export const metadata: Metadata = {
-  title: '404 - Page Not Found | Calobite',
-  description: 'The page you are looking for does not exist. Return to the Calobite homepage or search our nutrition database.',
+  title: '404 Page Not Found | Return to Calobite',
+  description: 'The page you\'re looking for doesn\'t exist. Return to Calobite\'s homepage or search our nutrition database to find what you need.',
   robots: {
     index: false,
     follow: true,
@@ -23,15 +23,15 @@ export default function NotFound() {
       <div className="max-w-2xl mx-auto text-center">
         {/* 404 Visual */}
         <div className="mb-8">
-          <h1 className="text-9xl md:text-[12rem] font-bold text-primary/20">
+          <p className="text-9xl md:text-[12rem] font-bold text-primary/20" aria-hidden="true">
             404
-          </h1>
+          </p>
         </div>
 
         {/* Error Message */}
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
           Page Not Found
-        </h2>
+        </h1>
         <p className="text-lg text-muted-foreground mb-8 max-w-md mx-auto">
           Sorry, we couldn&apos;t find the page you&apos;re looking for. 
           The product or page may have been moved or doesn&apos;t exist.

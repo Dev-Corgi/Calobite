@@ -3,8 +3,8 @@ import { PolicyContent } from './_components/policy-content';
 import { generateArticleSchema } from '@/lib/schema';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Calobite - Data Protection & Privacy',
-  description: 'Read the Calobite Privacy Policy to understand how we collect, use, and protect your personal data. Your privacy is important to us. Learn about GDPR compliance, data security, and user rights.',
+  title: 'Privacy Policy | How Calobite Protects Your Data',
+  description: 'Read Calobite\'s Privacy Policy to understand how we collect, use, and protect your personal information. Your privacy matters. GDPR compliant and transparent.',
   alternates: {
     canonical: 'https://www.calobite.com/privacy-policy',
   },

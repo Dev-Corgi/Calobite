@@ -3,8 +3,8 @@ import { TermsContent } from './_components/terms-content';
 import { generateArticleSchema } from '@/lib/schema';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | Calobite - User Agreement & Guidelines',
-  description: 'Please read our Terms of Service carefully before using the Calobite application. This document governs your use of our service, user rights, and platform guidelines.',
+  title: 'Terms of Service | Calobite User Agreement & Guidelines',
+  description: 'Review Calobite\'s Terms of Service before using our platform. Understand your rights, responsibilities, and our commitment to providing quality nutrition data.',
   alternates: {
     canonical: 'https://www.calobite.com/terms-of-service',
   },

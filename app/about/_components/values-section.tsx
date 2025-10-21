@@ -14,17 +14,19 @@ export function ValuesSection() {
       <h2 className="text-3xl font-bold text-center mb-12">Our Core Values</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {values.map((value) => (
-          <Card key={value.title} className="text-center">
-            <CardHeader>
-              <div className="mx-auto bg-primary/10 text-primary rounded-full w-16 h-16 flex items-center justify-center mb-4">
-                <CheckCircle className="w-8 h-8" />
-              </div>
-              <CardTitle>{value.title}</CardTitle>
-            </CardHeader>
-            <CardDescription className="p-6 pt-0">
-              {value.description}
-            </CardDescription>
-          </Card>
+          <article key={value.title}>
+            <Card className="text-center h-full">
+              <CardHeader>
+                <div className="mx-auto bg-primary/10 text-primary rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                  <CheckCircle className="w-8 h-8" />
+                </div>
+                <CardTitle>{value.title}</CardTitle>
+              </CardHeader>
+              <CardDescription className="p-6 pt-0">
+                {value.description}
+              </CardDescription>
+            </Card>
+          </article>
         ))}
       </div>
     </section>

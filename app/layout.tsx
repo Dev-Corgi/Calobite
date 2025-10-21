@@ -3,12 +3,20 @@ import { Inter } from 'next/font/google'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { MainNav } from "@/components/main-nav";
 import { Footer } from "@/components/footer";
+import { BreadcrumbNav } from "@/components/breadcrumb-nav";
 import { Toaster } from "@/components/ui/sonner";
 import { WebVitals } from './web-vitals';
 import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/schema';
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'optional',  // CLS prevention: skip if not loaded
+  preload: true,
+  variable: '--font-inter',
+  adjustFontFallback: true,  // Automatic size-adjust
+  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Arial', 'sans-serif'],
+})
 
 // Viewport configuration for mobile-first indexing
 export const viewport: Viewport = {
@@ -25,10 +33,10 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://www.calobite.com'),
   title: {
-    default: 'Calobite - Smart Nutrition Tracker & Food Database',
+    default: 'Calobite - Track Nutrition & Calories for Millions of Foods',
     template: '%s | Calobite'
   },
-  description: 'Discover nutritional information for millions of food products. Track calories, macros, and make healthier choices with Calobite\'s comprehensive nutrition database.',
+  description: 'Discover detailed nutrition facts for millions of food products. Track calories, macros, and ingredients with Calobite\'s comprehensive food database. Start your healthy journey today.',
   keywords: [
     'nutrition tracker',
     'calorie counter',
@@ -98,10 +106,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Preconnect to external domains for faster loading */}
+        {/* Preload critical resources for LCP optimization */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://world.openfoodfacts.org" />
         <link rel="dns-prefetch" href="https://world.openfoodfacts.org" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         
         {/* Organization Schema for Knowledge Graph */}
         <script
@@ -121,13 +131,19 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="flex flex-col min-h-screen">
           <MainNav />
+          {/* Breadcrumb Navigation - appears below header */}
+          <div className="border-b border-border/40 bg-muted/30">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
+              <BreadcrumbNav showHomeIcon />
+            </div>
+          </div>
           <main className="flex-1">
             {children}
           </main>
           <Footer />
           <Toaster />
         </div>
-        {/* Google Analytics 4 */}
+        {/* Google Analytics 4 - Load after interactive */}
         {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
         {/* Web Vitals Tracking */}
         <WebVitals />

@@ -14,16 +14,18 @@ export function TeamSection() {
       <h2 className="text-3xl font-bold text-center mb-12">Meet the Team</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {teamMembers.map((member) => (
-          <Card key={member.name}>
-            <CardContent className="p-6 text-center">
-              <Avatar className="w-24 h-24 mx-auto mb-4">
-                <AvatarImage src={member.image} alt={member.name} />
-                <AvatarFallback>{member.fallback}</AvatarFallback>
-              </Avatar>
-              <h3 className="font-semibold text-lg">{member.name}</h3>
-              <p className="text-sm text-primary">{member.role}</p>
-            </CardContent>
-          </Card>
+          <article key={member.name}>
+            <Card>
+              <CardContent className="p-6 text-center">
+                <Avatar className="w-24 h-24 mx-auto mb-4">
+                  <AvatarImage src={member.image} alt={member.name} />
+                  <AvatarFallback>{member.fallback}</AvatarFallback>
+                </Avatar>
+                <h3 className="font-semibold text-lg">{member.name}</h3>
+                <p className="text-sm text-primary">{member.role}</p>
+              </CardContent>
+            </Card>
+          </article>
         ))}
       </div>
     </section>

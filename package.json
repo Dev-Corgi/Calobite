@@ -11,7 +11,12 @@
     "lint": "eslint",
     "clean": "node -e \"require('fs').rmSync('.next', {recursive: true, force: true})\"",
     "check-brands": "tsx -r dotenv/config scripts/check-top-brands.ts dotenv_config_path=.env.local",
-    "prebuild": "echo 'Verifying top brands...' && npm run check-brands"
+    "check-crawling": "tsx -r dotenv/config scripts/check-crawling.ts dotenv_config_path=.env.local",
+    "analyze": "ANALYZE=true npm run build",
+    "prebuild": "echo 'Verifying top brands...' && npm run check-brands",
+    "pre-deploy-check": "tsx -r dotenv/config scripts/pre-deploy-check.ts dotenv_config_path=.env.local",
+    "deploy": "npm run pre-deploy-check && vercel --prod",
+    "deploy:preview": "vercel"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -67,6 +72,7 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.19",
+    "@types/jsdom": "^21.1.6",
     "@types/node": "^20.19.19",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -74,6 +80,7 @@
     "@types/stream-json": "^1.7.8",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
+    "jsdom": "^24.0.0",
     "stream-json": "^1.9.1",
     "tailwindcss": "^4",
     "tsx": "^4.20.6",

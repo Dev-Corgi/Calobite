@@ -3,8 +3,22 @@ import { FaqList } from './_components/faq-list';
 import { generateFAQSchema } from '@/lib/schema';
 
 export const metadata: Metadata = {
-  title: 'FAQ | Calobite - Answers to Your Nutrition Questions',
-  description: 'Find answers to frequently asked questions about Calobite, including how to use the app, data accuracy, and subscription details. Get the information you need to start your health journey.',
+  title: 'FAQ | Common Questions About Calobite Answered',
+  description: 'Find answers to frequently asked questions about Calobite. Learn how to use the app, understand data accuracy, and get tips for tracking nutrition effectively.',
+  alternates: {
+    canonical: 'https://www.calobite.com/faq',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
   openGraph: {
     title: 'Calobite FAQ | Get Answers to Your Questions',
     description: 'Explore our FAQ page to find answers about Calobite&apos;s features and data.',
@@ -64,13 +78,15 @@ export default function FaqPage() {
         }}
       />
       <div className="container mx-auto py-16 md:py-24">
-        <div className="text-center mb-16">
+        <header className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Frequently Asked Questions</h1>
           <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-2xl mx-auto">
             Have questions? We&apos;ve got answers. If you can&apos;t find what you&apos;re looking for, feel free to contact us.
           </p>
-        </div>
-        <FaqList />
+        </header>
+        <section>
+          <FaqList />
+        </section>
       </div>
     </>
   );

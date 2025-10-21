@@ -187,8 +187,27 @@ export async function generateMetadata(
   
   const description = generateProductDescription(product);
   
+  // Optimize title length (target: 50-60 chars)
+  const brandPart = product.brands || 'Unknown Brand';
+  const productTitle = product.product_name || 'Product';
+  
+  // Try full version first
+  let title = `${productTitle} by ${brandPart} - Nutrition Facts | Calobite`;
+  
+  // If too long, use shorter version
+  if (title.length > 60) {
+    title = `${productTitle} - Nutrition Facts | Calobite`;
+  }
+  
+  // If still too long, truncate product name
+  if (title.length > 60) {
+    const maxProductLength = 60 - ' - Nutrition Facts | Calobite'.length;
+    const truncatedProduct = productTitle.slice(0, maxProductLength);
+    title = `${truncatedProduct} - Nutrition Facts | Calobite`;
+  }
+  
   return {
-    title: `${product.product_name || 'Product'} - ${product.brands || 'Unknown Brand'}`,
+    title,
     description,
     alternates: {
       canonical: `${baseUrl}/product/${code}`,

@@ -17,16 +17,21 @@ export async function generateMetadata({
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.calobite.com';
   
   const title = query 
-    ? `${query} - Nutrition Search Results | Calobite`
-    : 'Search Food Database | Calobite';
+    ? `Search: "${query}" | Calobite Food Database`
+    : 'Search Food Database | Find Nutrition Facts Instantly';
   
   const description = query
-    ? `Find nutrition information for ${query}. Search our comprehensive food database with calorie counts, macros, and ingredients for millions of products.`
-    : 'Search millions of food products for detailed nutrition information, calorie counts, ingredient lists, and allergen data.';
+    ? `Search results for "${query}". Browse nutritional information, calories, and ingredients for thousands of food products matching your search.`
+    : 'Search millions of food products to find detailed nutrition information. Get instant access to calories, macros, ingredients, and allergens for any food.';
 
   return {
     title,
     description,
+    // Prevent search result pages from being indexed to avoid duplicate content
+    // and preserve crawl budget for important pages
+    robots: query 
+      ? { index: false, follow: true }  // Don't index search results with queries
+      : { index: true, follow: true },  // Allow indexing of main search page
     alternates: {
       canonical: query 
         ? `${baseUrl}/search?query=${encodeURIComponent(query)}`

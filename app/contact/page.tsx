@@ -3,8 +3,8 @@ import { ContactForm } from './_components/contact-form';
 import { ContactInfo } from './_components/contact-info';
 
 export const metadata: Metadata = {
-  title: 'Contact Calobite | Get in Touch for Support & Inquiries',
-  description: 'Have a question or feedback? Contact the Calobite team. We&apos;re here to help with support, partnership inquiries, and more. Reach out via our contact form or email.',
+  title: 'Contact Calobite | Get Support & Share Feedback',
+  description: 'Need help or have feedback? Contact Calobite\'s support team. We\'re here to assist with questions, partnerships, and feature requests. Reach out today.',
   alternates: {
     canonical: 'https://www.calobite.com/contact',
   },
@@ -33,15 +33,21 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div className="container mx-auto py-16 md:py-24">
-      <div className="text-center mb-16">
+      <header className="text-center mb-16">
         <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Contact Us</h1>
         <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-2xl mx-auto">
           We&apos;re here to help. Whether you have a question, a suggestion, or a partnership inquiry, we&apos;d love to hear from you.
         </p>
-      </div>
+      </header>
       <div className="grid md:grid-cols-2 gap-16 items-start">
-        <ContactInfo />
-        <ContactForm />
+        <aside>
+          <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
+          <ContactInfo />
+        </aside>
+        <section>
+          <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
+          <ContactForm />
+        </section>
       </div>
     </div>
   );

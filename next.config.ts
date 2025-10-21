@@ -2,6 +2,9 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  // Bundle optimization
+  swcMinify: true,
+  productionBrowserSourceMaps: false,
   
 
   images: {
@@ -20,16 +23,16 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    optimizePackageImports: ['@radix-ui/react-*'],
+    optimizePackageImports: [
+      '@radix-ui/react-*',
+      'lucide-react',
+      'recharts',
+    ],
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   reactStrictMode: true,
-
-  // Use 'standalone' for Docker/serverless, or remove for traditional deployment
-  // For Vercel, you can remove this line or keep it
-  output: 'standalone',
   
   // Optimize static generation
   // Increase timeout for generateStaticParams during build
@@ -52,6 +55,14 @@ const nextConfig: NextConfig = {
             value: '1; mode=block',
           },
           {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+          },
+          {
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload',
           },
@@ -59,15 +70,17 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: `
               default-src 'self';
-              script-src 'self' 'unsafe-eval' 'unsafe-inline' *.googletagmanager.com;
-              style-src 'self' 'unsafe-inline';
-              img-src 'self' data: *.unsplash.com https:;
-              connect-src 'self' https://world.openfoodfacts.org;
-              font-src 'self' fonts.gstatic.com;
+              script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com;
+              style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+              img-src 'self' data: blob: https://images.unsplash.com https://world.openfoodfacts.org https://www.google-analytics.com;
+              connect-src 'self' https://world.openfoodfacts.org https://www.google-analytics.com https://*.supabase.co;
+              font-src 'self' data: https://fonts.gstatic.com;
+              media-src 'self';
               object-src 'none';
               base-uri 'self';
               form-action 'self';
               frame-ancestors 'none';
+              upgrade-insecure-requests;
             `.replace(/\s+/g, ' ').trim()
           }
         ],
@@ -78,6 +91,16 @@ const nextConfig: NextConfig = {
   generateEtags: true,
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   trailingSlash: false,
+  poweredByHeader: false,  // Remove X-Powered-By header
+  
+  // Optimize production build
+  ...(process.env.NODE_ENV === 'production' && {
+    compiler: {
+      removeConsole: {
+        exclude: ['error', 'warn'],
+      },
+    },
+  }),
 };
 
 export default nextConfig;
